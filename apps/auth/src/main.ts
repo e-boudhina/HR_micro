@@ -12,6 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   await app.listen();
   */
+ /*
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthModule,
     {
@@ -19,5 +20,17 @@ async function bootstrap() {
     },
   );
   await app.listen();
+  */
+  const app = await NestFactory.create(AuthModule);
+  const configService = app.get(ConfigService);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: []
+    }
+  });
+  await app.startAllMicroservices();
+
 }
 bootstrap();
