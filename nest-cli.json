@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "http-api-gateway": {
+      "type": "application",
+      "root": "apps/http-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/http-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/http-api-gateway/tsconfig.app.json"
+      }
     }
   }
 }

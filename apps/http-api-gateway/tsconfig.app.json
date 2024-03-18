@@ -1,12 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "../../dist/libs/common",
-    "baseUrl": "../../",
-    "paths": {
-      "@app/common/*": ["libs/common/src/*"]
-    }
+    "declaration": false,
+    "outDir": "../../dist/apps/http-api-gateway"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

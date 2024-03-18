@@ -13,7 +13,8 @@ import { UsersModule } from './users/users.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module';
+import { DatabaseModule } from '@app/common';
+
 
 
 @Module({
@@ -21,7 +22,7 @@ import { DatabaseModule } from './database/database.module';
     JwtModule.register({secret: 'at-secret'}),
     TypeOrmModule.forFeature([User, Role]),
     MailModule,
-    ConfigModule.forRoot({isGlobal: true}), // make this or add it to common since its cglobal liek database!!
+    ConfigModule.forRoot({isGlobal: true, envFilePath: './apps/auth/.env'}), // make this or add it to common since its cglobal liek database!!
     DatabaseModule,
     UsersModule,
     PermissionsModule,
