@@ -14,7 +14,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@app/common';
-import { RmqModule } from '@app/common/rmq/rmq.module';
+//import { RmqModule } from '@app/common/rmq/rmq.module';
 
 
 
@@ -29,7 +29,7 @@ import { RmqModule } from '@app/common/rmq/rmq.module';
     PermissionsModule,
     RolesModule,
     JwtModule.register({}),
-    RmqModule
+    //RmqModule
   ], 
   providers: [AuthService, AtStrategy, RtStrategy],
   controllers: [AuthController]
