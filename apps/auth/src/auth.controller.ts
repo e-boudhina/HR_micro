@@ -18,7 +18,8 @@ export class AuthController {
 
     constructor(
         private authService: AuthService,
-        @Inject('TEST_SERVICE') private readonly testService: ClientProxy){
+        //@Inject('TEST_SERVICE') private readonly testService: ClientProxy
+        ){
     }
     
     @Public()
@@ -162,18 +163,20 @@ export class AuthController {
     }
 
     @MessagePattern({cmd: 'fetch_user'})
-    async getUser(){
+    async getUser(@Ctx() context: RmqContext){
         console.log('auth end point hit');
-        /*
+        
         const channel = context.getChannelRef();
         const message = context.getMessage();// get message from context
         channel.ack(message);
-        */
+        
+       /*
         const response = await lastValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
         console.log('response: '+ response);
         console.log(response);
+        */
         return {
-            user: response
+            user: "Elyes boudhina"
         }
     }
 }

@@ -2,6 +2,7 @@ import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { HttpApiGatewayService } from './http-api-gateway.service';
 import { AuthService } from 'apps/auth/src/auth.service';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller()
 export class HttpApiGatewayController {
@@ -11,11 +12,9 @@ export class HttpApiGatewayController {
 
     @Get()
     async getUser(){
-      console.log('end poitn reahced');
+      console.log('get user endpoint reached');
       
-      return this.authService.send(
-        {cmd:'fetch_user'}, {}
-        );
+      return  await lastValueFrom(this.authService.send({ cmd: 'fetch_user' }, {}));
 
     }
     @Post()

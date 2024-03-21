@@ -12,7 +12,7 @@ import { Role } from './roles/entities/role.entity';
 import { UsersModule } from './users/users.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseModule } from '@app/common';
 import { RolesService } from './roles/roles.service';
 import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
@@ -32,22 +32,37 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
     RolesModule,
     JwtModule.register({}),
     //RmqModule
-    ClientsModule.register([
-      {
-        name:'TEST_SERVICE',
-        transport:Transport.TCP,
-        options:{
-            host:'127.0.0.1',
-            port:5200
-        }
-      }
-    ])
+
+   
   ], 
   providers: [
     AuthService,
     AtStrategy,
     RtStrategy,
-    
+    /*
+    {
+      provide: 'AUTH_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const USER = configService.get('RABBITMQ_USER');
+        const PASSWORD = configService.get('RABBITMQ_PASS');
+        const HOST = configService.get('RABBITMQ_HOST');
+        const QUEUE = configService.get('RABBITMQ_AUTH_QUEUE');
+        
+        // Create client proxy dynamically
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
+            queue: QUEUE,
+            queueOptions: {
+              durable: true,
+            },
+          },
+        });
+      },
+      inject: [ConfigService],
+    },
+    */
   ],
   controllers: [AuthController],
  

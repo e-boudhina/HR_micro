@@ -8,6 +8,7 @@ import { AuthController } from 'apps/auth/src/auth.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true, envFilePath: './.env'}),
+    /*
     ClientsModule.register([
       {
         name:'AUTH_SERVICE',
@@ -18,10 +19,11 @@ import { AuthController } from 'apps/auth/src/auth.controller';
         }
       }
     ])
+    */
   ],
   controllers: [HttpApiGatewayController],
   providers: [
-    /*
+    
     HttpApiGatewayService,
     {
       provide: 'AUTH_SERVICE',
@@ -43,7 +45,7 @@ import { AuthController } from 'apps/auth/src/auth.controller';
       },
       inject:[ConfigService]
     },
-    */
+    
   ],
 })
 export class HttpApiGatewayModule {}
