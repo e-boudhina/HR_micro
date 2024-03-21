@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, HttpCode, HttpStatus, Param, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, HttpCode, HttpStatus, Inject, Param, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "./users/dto/create-user.dto";
 import { Tokens } from "./types/tokens.type";
@@ -10,11 +10,15 @@ import { AtGuard, RtGuard} from "./common/guards";
 import { GetCurrentUser, GetCurrentUserId } from "./common/decorators";
 import { Public } from "./common/decorators/public.decorator";
 import { Role } from "./roles/entities/role.entity";
+import { ClientProxy, Ctx, MessagePattern, RmqContext } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
 
 @Controller('auth')
 export class AuthController {
 
-    constructor(private authService: AuthService){
+    constructor(
+        private authService: AuthService,
+        @Inject('TEST_SERVICE') private readonly testService: ClientProxy){
     }
     
     @Public()
@@ -155,5 +159,21 @@ export class AuthController {
     @Post('test/:reset_password_token')
     test(@Param('reset_password_token') passwordResetToken: string) {
         return passwordResetToken;
+    }
+
+    @MessagePattern({cmd: 'fetch_user'})
+    async getUser(){
+        console.log('auth end point hit');
+        /*
+        const channel = context.getChannelRef();
+        const message = context.getMessage();// get message from context
+        channel.ack(message);
+        */
+        const response = await firstValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
+        console.log('response: '+ response);
+        console.log(response);
+        return {
+            user: response
+        }
     }
 }

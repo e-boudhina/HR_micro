@@ -6,17 +6,20 @@ import { ClientProxy } from '@nestjs/microservices';
 @Controller()
 export class HttpApiGatewayController {
   constructor(
-    @Inject('AUTH_SERVICE') private authService: ClientProxy
+    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy
     ) {}
 
-    @Get('/')
+    @Get()
     async getUser(){
       console.log('end poitn reahced');
+      
       return this.authService.send(
-        {
-          cmd: 'get-user'
-        },
-        {}
+        {cmd:'fetch_user'}, {}
         );
+
+    }
+    @Post()
+    async getMessage(){
+      return "hey"
     }
 }

@@ -3,7 +3,8 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Public } from '../common/decorators/public.decorator';
-
+import { MessagePattern } from '@nestjs/microservices';
+/*
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -58,4 +59,48 @@ export class RolesController {
   }
 
   
+}
+*/
+@Controller('roles')
+export class RolesController {
+  constructor(private readonly rolesService: RolesService) {}
+
+
+  @MessagePattern({ cmd: 'create_role' })
+  create(createRoleDto: CreateRoleDto) {
+    return this.rolesService.create(createRoleDto);
+  }
+
+  @MessagePattern({ cmd: 'get_all_roles' })
+  getAllRoles() {
+    return this.rolesService.getAllRoles();
+  }
+
+  @MessagePattern({ cmd: 'get_role_by_id' })
+  findOne(id: number) {
+    return this.rolesService.getRoleById(id);
+  }
+  
+  @MessagePattern({ cmd: 'update_role' })
+  update(payload: { id: number, updateRoleDto: UpdateRoleDto }) {
+    const { id, updateRoleDto } = payload;
+    return this.rolesService.updateRole(id, updateRoleDto);
+  }
+
+  @MessagePattern({ cmd: 'delete_role' })
+  remove(id: number) {
+    return this.rolesService.deleteRole(id);
+  }
+
+  @MessagePattern({ cmd: 'assign_role_to_user' })
+  assignRoleToUser(payload: { userId: number, roleId: number }) {
+    const { userId, roleId } = payload;
+    return this.rolesService.assignRoleToUser(userId, roleId);
+  }
+
+  @MessagePattern({ cmd: 'assign_permissions_to_role' })
+  assignPermissionsToRole(payload: { roleId: number, permissionIds: number[] }) {
+    const { roleId, permissionIds } = payload;
+    return this.rolesService.assignPermissionToRole(roleId, permissionIds);
+  }
 }

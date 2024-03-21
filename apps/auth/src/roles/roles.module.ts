@@ -12,5 +12,6 @@ import { Permission } from '../permissions/entities/permission.entity';
   imports: [ JwtModule.register({}), TypeOrmModule.forFeature([Role, User, Permission])],
   controllers: [RolesController],
   providers: [RolesService],
+  exports: [RolesService] 
 })
 export class RolesModule {}

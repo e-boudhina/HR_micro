@@ -14,6 +14,8 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '@app/common';
+import { RolesService } from './roles/roles.service';
+import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
 //import { RmqModule } from '@app/common/rmq/rmq.module';
 
 
@@ -30,8 +32,24 @@ import { DatabaseModule } from '@app/common';
     RolesModule,
     JwtModule.register({}),
     //RmqModule
+    ClientsModule.register([
+      {
+        name:'TEST_SERVICE',
+        transport:Transport.TCP,
+        options:{
+            host:'127.0.0.1',
+            port:5200
+        }
+      }
+    ])
   ], 
-  providers: [AuthService, AtStrategy, RtStrategy],
-  controllers: [AuthController]
+  providers: [
+    AuthService,
+    AtStrategy,
+    RtStrategy,
+    
+  ],
+  controllers: [AuthController],
+ 
 })
 export class AuthModule {}

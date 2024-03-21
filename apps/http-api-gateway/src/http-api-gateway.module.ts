@@ -2,14 +2,26 @@ import { Module } from '@nestjs/common';
 import { HttpApiGatewayController } from './http-api-gateway.controller';
 import { HttpApiGatewayService } from './http-api-gateway.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { ClientProxy, ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthController } from 'apps/auth/src/auth.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true, envFilePath: './.env'})
+    ConfigModule.forRoot({isGlobal: true, envFilePath: './.env'}),
+    ClientsModule.register([
+      {
+        name:'AUTH_SERVICE',
+        transport:Transport.TCP,
+        options:{
+            host:'127.0.0.1',
+            port:4200
+        }
+      }
+    ])
   ],
   controllers: [HttpApiGatewayController],
   providers: [
+    /*
     HttpApiGatewayService,
     {
       provide: 'AUTH_SERVICE',
@@ -31,6 +43,7 @@ import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservice
       },
       inject:[ConfigService]
     },
+    */
   ],
 })
 export class HttpApiGatewayModule {}
