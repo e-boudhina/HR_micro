@@ -11,7 +11,7 @@ import { GetCurrentUser, GetCurrentUserId } from "./common/decorators";
 import { Public } from "./common/decorators/public.decorator";
 import { Role } from "./roles/entities/role.entity";
 import { ClientProxy, Ctx, MessagePattern, RmqContext } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 
 @Controller('auth')
 export class AuthController {
@@ -169,7 +169,7 @@ export class AuthController {
         const message = context.getMessage();// get message from context
         channel.ack(message);
         */
-        const response = await firstValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
+        const response = await lastValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
         console.log('response: '+ response);
         console.log(response);
         return {

@@ -25,8 +25,8 @@ async function bootstrap() {
   })
   
   await app.startAllMicroservices();
-  await app.listen(4200);
-  console.log(`Auth app is running on port ${await app.getUrl()}`);
+  //await app.listen(4200);
+//  console.log(`Auth app is running on port ${await app.getUrl()}`);
 
 /*
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
