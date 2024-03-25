@@ -1,9 +1,12 @@
 version: '3'
 services:
+
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: rabbitmq-container
     hostname: rabbitmq
+    networks:
+      - office-network    
     volumes:
       - /var/lib/rabbitmq
     ports:
@@ -11,3 +14,82 @@ services:
       - '15672:15672'
     env_file:
       - .env
+
+  auth:
+    build:
+      context: ./
+      dockerfile: ./apps/auth/Dockerfile
+    container_name: auth-container
+    networks:
+      - office-network
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - mysql
+    volumes:
+      - .:/usr/src/app # any change to base folder should be reflected
+      - /usr/src/app/node_modules
+    command: npm run start:dev auth # overrides CMD from dockerfile
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./apps/http-api-gateway/Dockerfile
+    container_name: api-gateway-container
+    networks:
+      - office-network
+    ports:
+      - '3200:3200'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - auth
+    volumes:
+      - .:/usr/src/app # any change to base folder should be reflected
+      - /usr/src/app/node_modules #why is this format diffrent? it's not declare on volumes below. why?
+    command: npm run start:dev http-api-gateway
+
+  mysql:
+    image: "mysql:8.3"
+    networks:
+      - office-network
+    container_name: mysql-container 
+    environment:
+      #- MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=hr_management_platform
+      - MYSQL_ROOT_PASSWORD=axelites_pwd
+      - MYSQL_SYNCHRONIZE=true
+    ports:
+      - "3306:3306"
+    restart: unless-stopped  
+    volumes: # you need to delete this volume or else docker will only create the db the first time
+    # then it will look into this volume and does not check if it exist or not (docker volume ls - docker volume rm 5twingraduationproject_db) 
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    networks:
+      - office-network
+    container_name: phpmyadmin-container
+    #you can use env_file param then pass ".env" path instead
+    environment:
+      - PMA_HOST=mysql
+      #- PMA_USER=root
+      #- PMA_ROOT_PASSWORD=axelites_pwd
+      #- PMA_PASSWORD=axelites_pwd
+    ports:
+      - "8095:80"
+    restart: unless-stopped
+    depends_on:
+      - mysql
+
+
+networks:
+  office-network:
+    driver: bridge
+
+volumes:
+  db:

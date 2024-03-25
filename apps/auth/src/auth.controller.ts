@@ -170,13 +170,13 @@ export class AuthController {
         const message = context.getMessage();// get message from context
         channel.ack(message);
         
-       
+       /*
         const response = await lastValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
         console.log('response: '+ response);
         console.log(response);
-        
+        */
         return {
-            user: response
+            user: "elye boudhina"
         }
     }
 }
