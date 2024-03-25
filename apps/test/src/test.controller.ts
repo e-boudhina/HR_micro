@@ -8,6 +8,7 @@ export class TestController {
 
   @MessagePattern({ cmd: 'fetch_username' })
   async fetchUsername() {
+    console.log('QMQ test service reached')
     return 'Elyes BOudhina';
   }
 }

@@ -39,9 +39,9 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
     AuthService,
     AtStrategy,
     RtStrategy,
-    /*
+    
     {
-      provide: 'AUTH_SERVICE',
+      provide: 'TEST_SERVICE',
       useFactory: (configService: ConfigService) => {
         const USER = configService.get('RABBITMQ_USER');
         const PASSWORD = configService.get('RABBITMQ_PASS');
@@ -62,7 +62,7 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
       },
       inject: [ConfigService],
     },
-    */
+    
   ],
   controllers: [AuthController],
  
