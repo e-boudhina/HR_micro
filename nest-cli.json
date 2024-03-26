@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/test/tsconfig.app.json"
       }
+    },
+    "service-discovery": {
+      "type": "application",
+      "root": "apps/service-discovery",
+      "entryFile": "main",
+      "sourceRoot": "apps/service-discovery/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/service-discovery/tsconfig.app.json"
+      }
     }
   }
 }

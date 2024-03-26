@@ -5,6 +5,29 @@ import { ConfigService } from '@nestjs/config';
 import "reflect-metadata";
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { RolesModule } from './roles/roles.module';
+import { connect } from 'amqplib';
+import { Logger } from '@nestjs/common';
+
+async function registerService() {
+  const connection = await connect('amqp://localhost');
+  const channel = await connection.createChannel();
+
+  const exchange = 'service-registry';
+  const serviceName = 'auth-service';
+
+  await channel.assertExchange(exchange, 'fanout', { durable: false });
+
+  const serviceInfo = {
+    name: serviceName,
+    endpoints: ['/auth'], // Example endpoints
+    // Add other metadata as needed
+  };
+
+  channel.publish(exchange, '', Buffer.from(JSON.stringify(serviceInfo)));
+
+  console.log(`Registered ${serviceName} with RabbitMQ`);
+}
+
 
 async function bootstrap() {
   /*
@@ -47,7 +70,7 @@ console.log(`amqp://${USER}:${PASSWORD}@${HOST}`);
       },
     }
   });
-  await app.startAllMicroservices();
+  await app.startAllMicroservices().then(() => Logger.log('✨ Auth MicroService Started'));;
 
 
  
