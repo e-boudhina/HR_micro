@@ -18,7 +18,7 @@ export class AuthController {
 
     constructor(
         private authService: AuthService,
-        @Inject('TEST_SERVICE') private readonly testService: ClientProxy
+       // @Inject('TEST_SERVICE') private readonly testService: ClientProxy
         ){
     }
     

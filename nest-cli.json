@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/test/tsconfig.app.json"
       }
+    },
+    "eureka-server": {
+      "type": "application",
+      "root": "apps/eureka-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/eureka-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/eureka-server/tsconfig.app.json"
+      }
     }
   }
 }

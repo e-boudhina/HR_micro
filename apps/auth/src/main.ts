@@ -3,8 +3,9 @@ import { AuthModule } from './auth.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import "reflect-metadata";
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, RmqOptions, Transport } from '@nestjs/microservices';
 import { RolesModule } from './roles/roles.module';
+import { RmqService } from '@app/common';
 
 async function bootstrap() {
   /*
@@ -28,7 +29,7 @@ async function bootstrap() {
   await app.listen();
   */
  
-  
+  /*
   const app = await NestFactory.create(AuthModule);
   const configService = app.get(ConfigService);
   const USER = configService.get('RABBITMQ_USER');
@@ -48,6 +49,14 @@ console.log(`amqp://${USER}:${PASSWORD}@${HOST}`);
     }
   });
   await app.startAllMicroservices();
+*/
+  
+const app = await NestFactory.create(AuthModule);
+const rmqService = app.get<RmqService>(RmqService); //  I don't get the syntax
+app.connectMicroservice<RmqOptions>(rmqService.getOptions('AUTH'));
+
+await app.startAllMicroservices();
+
 
 
  

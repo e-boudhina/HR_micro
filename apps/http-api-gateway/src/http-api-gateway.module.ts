@@ -4,6 +4,8 @@ import { HttpApiGatewayService } from './http-api-gateway.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from 'apps/auth/src/auth.controller';
+import { RmqModule } from '@app/common';
+import { AUTH_SERVICE } from './constants/services';
 
 @Module({
   imports: [
@@ -20,11 +22,15 @@ import { AuthController } from 'apps/auth/src/auth.controller';
       }
     ])
     */
+    RmqModule.register({
+      name: AUTH_SERVICE,
+    }),
   ],
   controllers: [HttpApiGatewayController],
   providers: [
     
     HttpApiGatewayService,
+    /*
     {
       provide: 'AUTH_SERVICE',
       useFactory: (configService: ConfigService) => {
@@ -45,7 +51,7 @@ import { AuthController } from 'apps/auth/src/auth.controller';
       },
       inject:[ConfigService]
     },
-    
+    */
   ],
 })
 export class HttpApiGatewayModule {}

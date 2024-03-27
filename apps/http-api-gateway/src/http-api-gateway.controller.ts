@@ -3,11 +3,12 @@ import { HttpApiGatewayService } from './http-api-gateway.service';
 import { AuthService } from 'apps/auth/src/auth.service';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { AUTH_SERVICE } from './constants/services';
 
 @Controller()
 export class HttpApiGatewayController {
   constructor(
-    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy
+    @Inject(AUTH_SERVICE) private readonly authService: ClientProxy
     ) {}
 
     @Get()

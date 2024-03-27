@@ -13,9 +13,10 @@ import { UsersModule } from './users/users.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DatabaseModule } from '@app/common';
+import { DatabaseModule, RmqModule } from '@app/common';
 import { RolesService } from './roles/roles.service';
 import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
+import { TEST_SERVICE } from './common/constants/services';
 //import { RmqModule } from '@app/common/rmq/rmq.module';
 
 
@@ -31,7 +32,9 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
     PermissionsModule,
     RolesModule,
     JwtModule.register({}),
-    //RmqModule
+    RmqModule.register({
+      name: TEST_SERVICE,
+    }),
 
    
   ], 
@@ -39,7 +42,7 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
     AuthService,
     AtStrategy,
     RtStrategy,
-    
+    /*
     {
       provide: 'TEST_SERVICE',
       useFactory: (configService: ConfigService) => {
@@ -61,8 +64,9 @@ import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservi
         });
       },
       inject: [ConfigService],
+      
     },
-    
+    */
   ],
   controllers: [AuthController],
  
