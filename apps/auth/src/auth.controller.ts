@@ -12,13 +12,14 @@ import { Public } from "./common/decorators/public.decorator";
 import { Role } from "./roles/entities/role.entity";
 import { ClientProxy, Ctx, MessagePattern, RmqContext } from "@nestjs/microservices";
 import { firstValueFrom, lastValueFrom } from "rxjs";
+import { TEST_SERVICE } from "./common/constants/services";
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
         private authService: AuthService,
-       // @Inject('TEST_SERVICE') private readonly testService: ClientProxy
+        @Inject(TEST_SERVICE) private readonly testService: ClientProxy
         ){
     }
     
@@ -131,9 +132,18 @@ export class AuthController {
 
     @Public()
     @Post('test')
-    testapi(@Req() req: Request)
+    async testapi(@Req() req: Request)
     {
-      return "Testing function";
+        console.log('auth end point hit');
+        
+       
+        const response = await lastValueFrom(this.testService.send({ cmd: 'fetch_username' }, {}));
+        console.log('response: '+ response);
+        console.log(response);
+        
+        return {
+            user: response
+        }
     }
 
     @Public()

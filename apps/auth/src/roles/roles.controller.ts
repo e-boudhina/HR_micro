@@ -4,7 +4,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { MessagePattern } from '@nestjs/microservices';
-/*
+
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -60,7 +60,7 @@ export class RolesController {
 
   
 }
-*/
+/*
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
@@ -103,4 +103,5 @@ export class RolesController {
     const { roleId, permissionIds } = payload;
     return this.rolesService.assignPermissionToRole(roleId, permissionIds);
   }
-}
+
+}  */

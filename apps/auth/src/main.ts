@@ -1,11 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
-import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import "reflect-metadata";
-import { MicroserviceOptions, RmqOptions, Transport } from '@nestjs/microservices';
-import { RolesModule } from './roles/roles.module';
-import { RmqService } from '@app/common';
+
 
 async function bootstrap() {
   /*
@@ -52,14 +49,20 @@ console.log(`amqp://${USER}:${PASSWORD}@${HOST}`);
 */
   
 const app = await NestFactory.create(AuthModule);
-const rmqService = app.get<RmqService>(RmqService); //  I don't get the syntax
-app.connectMicroservice<RmqOptions>(rmqService.getOptions('AUTH'));
-
+app.useGlobalPipes(new ValidationPipe());
 await app.startAllMicroservices();
 
+await app.listen(3500);
+  // Constructing the log message with a star and formatting
 
+  const message = `Server is listening on: ${await app.getUrl()}`;
 
- 
+  const stars = ' *'.repeat(message.length); // Adding 4 for padding
+
+  // Logging the message with stars for emphasis using the Nest.js logger
+  Logger.log(stars);
+  Logger.log(`* ${message} *`,  'Auth-application');
+  Logger.log(stars);
 
 }
 bootstrap();

@@ -11,13 +11,16 @@ export class RmqService {
     const PASSWORD = this.configService.get('RABBITMQ_PASS');
     const HOST = this.configService.get('RABBITMQ_HOST');
     const QUEUE = this.configService.get(`RABBIT_MQ_${queue}_QUEUE`);
+    console.log("the quename is"+QUEUE);
     return {
       transport: Transport.RMQ,
       options: {
         urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
         queue: QUEUE,
         noAck,
-        persistent: true,
+        queueOptions:{
+          durable: true, // keep data between restarts
+        },
       },
     };
   }
